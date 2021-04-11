@@ -17,6 +17,6 @@ add_executable(CodeForce
 #        1504/E.cpp
 #        1512/A.cpp
 #        1512/B.cpp
-        1512/C.cpp
-#        1512/D.cpp
+#        1512/C.cpp
+        1512/D.cpp
         )
