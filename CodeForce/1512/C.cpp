@@ -1,6 +1,13 @@
 #include <iostream>
 #include <string>
 
+/**
+ * 题意：
+ *  一个串s由 0 1 ? 组成
+ *  问是否可以修改?为0或1使s变为回文串
+ *  能输出回文串
+ *  不能输出 -1
+ */
 void solve() {
     int a{}, b{};
     std::cin >> a >> b;
@@ -13,60 +20,56 @@ void solve() {
         std::cout << -1 << std::endl;
         return;
     }
-    for (const auto &i:s) {
-        if (i == '0')
-            count0++;
-        else if (i == '1')
-            count1++;
+    for (int i = 0; i < (n + 1) / 2; ++i) {
+
+        if (s[i] == s[n - i - 1]) {
+            if (s[i] == '0') {
+                if (i == n - i - 1)
+                    count0++;
+                else
+                    count0 += 2;
+            } else if (s[i] == '1') {
+                if (i == n - i - 1)
+                    count1++;
+                else
+                    count1 += 2;
+            }
+        } else {
+            if (s[i] == '?') {
+                s[i] = s[n - i - 1];
+            } else if (s[n - i - 1] == '?') {
+                s[n - i - 1] = s[i];
+            } else {
+                std::cout << -1 << std::endl;
+                return;
+            }
+            if (s[i] == '0') {
+                count0 += 2;
+            } else {
+                count1 += 2;
+            }
+        }
     }
-    if (count0 > a || count1 > b) {
-        std::cout << -1 << std::endl;
-        return;
-    }
-    for (int i = 0; i <= n / 2; ++i) {
+    for (int i = 0; i < (n + 1) / 2; ++i) {
         if (count0 > a || count1 > b) {
             std::cout << -1 << std::endl;
             return;
         }
-        if (s[i] == '?') { //? -> x
-            if (s[n - i - 1] == '?') { //-> ?
-                if (a - count0 > b - count1) {
-                    if (i == n - i - 1)
-                        count0 += 1;
-                    else
-                        count0 += 2;
-                    s[i] = s[n - i - 1] = '0';
-                } else {
-                    if (i == n - i - 1)
-                        count1 += 1;
-                    else
-                        count1 += 2;
-                    s[i] = s[n - i - 1] = '1';
-                }
-            } else if (s[n - i - 1] == '0') {// -> 0
-                count0++;
-                s[i] = '0';
-            } else {// -> 1
-                count1++;
-                s[i] = '1';
+        if (s[i] == '?' && s[n - i - 1] == '?') {
+            if (a - count0 > b - count1) {
+                if (i == n - i - 1)
+                    count0 += 1;
+                else
+                    count0 += 2;
+                s[i] = s[n - i - 1] = '0';
+            } else {
+                if (i == n - i - 1)
+                    count1 += 1;
+                else
+                    count1 += 2;
+                s[i] = s[n - i - 1] = '1';
             }
-        } else if (s[i] == '0') {
 
-            if (s[n - i - 1] == '?') {
-                count0++;
-                s[n - i - 1] = '0';
-            } else if (s[n - i - 1] != '0') {
-                std::cout << -1 << std::endl;
-                return;
-            }
-        } else { // 1 -> x
-            if (s[n - i - 1] == '?') {
-                count1++;
-                s[n - i - 1] = '1';
-            } else if (s[n - i - 1] != '1') {
-                std::cout << -1 << std::endl;
-                return;
-            }
         }
     }
     if (count0 != a || count1 != b) {
